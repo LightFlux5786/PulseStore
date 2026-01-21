@@ -9,14 +9,7 @@
     <meta name="keywords" content="electronics, tech shop, gaming mouse, smart watch, headphones, buy gadgets online">
     <meta name="author" content="ElectroShop">
 
-    <meta property="og:title" content="ElectroShop - Future Tech Now">
-    <meta property="og:description" content="Upgrade your setup with our premium electronic collection. Fast delivery and best prices.">
-    <meta property="og:image" content="https://placehold.co/600x315/000/00f7ff?text=ElectroShop+Tech">
-    <meta property="og:url" content="https://yourwebsite.com">
-    <meta name="twitter:card" content="summary_large_image">
-
     <style>
-        /* --- CSS STYLING (Same as before) --- */
         :root {
             --bg-body: #0a0a0a;
             --bg-card: #161616;
@@ -25,8 +18,8 @@
             --text-muted: #a3a3a3;
             --accent: #00f7ff;
             --accent-hover: #00c4cc;
-            --whatsapp-green: #25D366;
             --border-color: #333333;
+            --whatsapp-green: #25D366;
         }
 
         body {
@@ -35,6 +28,9 @@
             padding: 0;
             background-color: var(--bg-body);
             color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
 
         header {
@@ -84,10 +80,22 @@
             box-shadow: 0 0 10px rgba(0, 247, 255, 0.2);
         }
 
+        /* --- CART BUTTON STYLES --- */
         .cart-container {
             display: flex;
             align-items: center;
             font-weight: bold;
+            cursor: pointer;
+            padding: 0.5rem 1rem;
+            border: 1px solid transparent;
+            border-radius: 4px;
+            transition: 0.3s;
+            user-select: none;
+        }
+
+        .cart-container:hover {
+            border-color: var(--accent);
+            background-color: #1a1a1a;
         }
 
         .cart-count {
@@ -100,45 +108,94 @@
             font-weight: 800;
         }
 
+        /* --- CART MODAL STYLES --- */
+        .cart-modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.85);
+            backdrop-filter: blur(8px);
+        }
+
+        .cart-modal-content {
+            background-color: var(--bg-card);
+            margin: 5% auto;
+            padding: 30px;
+            border: 1px solid var(--accent);
+            width: 90%;
+            max-width: 500px;
+            border-radius: 12px;
+            box-shadow: 0 0 30px rgba(0, 247, 255, 0.2);
+            position: relative;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(-30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .close-cart {
+            color: var(--text-muted);
+            position: absolute;
+            right: 20px;
+            top: 15px;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close-cart:hover { color: var(--accent); }
+
+        .cart-item-list {
+            list-style: none;
+            padding: 0;
+            margin: 20px 0;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .cart-total-box {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px solid var(--border-color);
+            text-align: right;
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: var(--accent);
+        }
+
+        /* --- PRODUCT GRID STYLES --- */
         .hero {
             background: linear-gradient(180deg, var(--bg-header) 0%, var(--bg-body) 100%);
             color: var(--text-main);
             text-align: center;
             padding: 4rem 1rem;
             border-bottom: 1px solid var(--border-color);
-            margin-bottom: 2rem;
         }
-
-        .hero h1 { 
-            margin: 0 0 1rem 0; 
-            font-size: 2.5rem;
-            text-shadow: 0 0 20px rgba(0, 247, 255, 0.3);
-        }
-        
-        .hero p { opacity: 0.8; color: var(--text-muted); }
 
         .container {
             max-width: 1200px;
-            margin: 0 auto;
+            margin: 2rem auto;
             padding: 0 1rem;
-            min-height: 400px;
         }
 
         .product-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); 
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
             gap: 1.5rem;
-            padding-bottom: 3rem;
-        }
-
-        .no-results {
-            grid-column: 1 / -1;
-            text-align: center;
-            padding: 3rem;
-            font-size: 1.5rem;
-            color: var(--text-muted);
-            border: 1px dashed var(--border-color);
-            border-radius: 8px;
+            padding-bottom: 5rem;
         }
 
         .card {
@@ -146,10 +203,9 @@
             border: 1px solid var(--border-color);
             border-radius: 12px;
             overflow: hidden;
-            transition: transform 0.2s, box-shadow 0.2s;
             display: flex;
-            flex-direction: row;
             height: 180px;
+            transition: 0.3s;
         }
 
         .card:hover {
@@ -163,12 +219,6 @@
             height: 100%;
             background-color: #222;
             object-fit: cover;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #555;
-            font-size: 0.7rem;
-            flex-shrink: 0;
         }
 
         .card-body {
@@ -176,21 +226,14 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
-            width: 100%;
-        }
-
-        .card-title {
-            font-size: 1.2rem;
-            margin: 0 0 0.5rem 0;
-            font-weight: 600;
+            flex-grow: 1;
         }
 
         .card-price {
             font-size: 1.3rem;
             color: var(--accent);
             font-weight: bold;
-            margin-bottom: auto;
-            text-shadow: 0 0 10px rgba(0, 247, 255, 0.4);
+            margin: 5px 0 10px 0;
         }
 
         .btn {
@@ -200,11 +243,9 @@
             padding: 0.5rem 1rem;
             border-radius: 4px;
             cursor: pointer;
-            font-size: 0.9rem;
             font-weight: bold;
-            transition: all 0.2s;
+            transition: 0.2s;
             align-self: flex-start;
-            margin-top: 10px;
         }
 
         .btn:hover {
@@ -212,10 +253,37 @@
             color: #000;
         }
 
-        @media (max-width: 450px) {
-            .product-grid { grid-template-columns: 1fr; }
-            .card { height: auto; flex-direction: column; }
-            .card-img { width: 100%; height: 150px; }
+        /* --- SOCIAL DOCK STYLES --- */
+        .social-dock {
+            position: fixed;
+            bottom: 25px;
+            left: 25px;
+            display: flex;
+            gap: 15px;
+            z-index: 1000;
+        }
+
+        .social-btn {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #1a1a1a;
+            border: 1px solid #444;
+            transition: 0.3s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+
+        .social-btn:hover {
+            transform: scale(1.1);
+            border-color: var(--accent);
+        }
+
+        .social-btn img {
+            width: 30px;
+            height: 30px;
         }
 
         footer {
@@ -227,37 +295,9 @@
             margin-top: auto;
         }
 
-        .social-dock {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            display: flex;
-            gap: 15px;
-            z-index: 1000;
-        }
-
-        .social-btn {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 0 15px rgba(0,0,0,0.5);
-            transition: transform 0.3s ease;
-            text-decoration: none;
-            background-color: #222;
-            border: 1px solid #444;
-        }
-
-        .social-btn:hover {
-            transform: scale(1.1);
-            border-color: var(--accent);
-        }
-
-        .social-btn img {
-            width: 28px;
-            height: 28px;
+        @media (max-width: 450px) {
+            .card { height: auto; flex-direction: column; }
+            .card-img { width: 100%; height: 180px; }
         }
     </style>
 </head>
@@ -268,8 +308,8 @@
         <div class="search-container">
             <input type="text" id="search-input" placeholder="Search premium tech...">
         </div>
-        <div class="cart-container">
-            Cart <span class="cart-count" id="cart-count">0</span>
+        <div class="cart-container" id="open-cart-btn" onclick="openCart()">
+            CART <span class="cart-count" id="cart-count">0</span>
         </div>
     </header>
 
@@ -280,22 +320,31 @@
         </div>
 
         <div class="container">
-            <div class="product-grid" id="product-grid">
-                </div>
+            <div class="product-grid" id="product-grid"></div>
         </div>
     </main>
 
     <div class="social-dock">
         <a href="https://wa.me/76094035" class="social-btn" target="_blank" title="WhatsApp Us">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp Support">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
         </a>
-        <a href="https://instagram.com/" class="social-btn" target="_blank" title="Follow us on Instagram">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/e/e7/Instagram_logo_2016.svg" alt="Instagram Profile">
+        <a href="https://instagram.com/pulse_store9" class="social-btn" target="_blank" title="Instagram">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/e/e7/Instagram_logo_2016.svg" alt="Instagram">
         </a>
     </div>
 
+    <div id="cart-modal" class="cart-modal">
+        <div class="cart-modal-content">
+            <span class="close-cart" onclick="closeCart()">&times;</span>
+            <h2 style="margin-top:0; border-bottom: 1px solid var(--border-color); padding-bottom: 10px;">Your Cart</h2>
+            <ul id="cart-items-list" class="cart-item-list"></ul>
+            <div class="cart-total-box" id="cart-total-display">Total: $0.00</div>
+            <button class="btn" style="width:100%; margin-top:20px; padding: 15px;" onclick="alert('Proceeding to Checkout...')">CHECKOUT NOW</button>
+        </div>
+    </div>
+
     <footer>
-        <p>&copy; 2024 ElectroShop Dark Edition. Built for speed and style.</p>
+        <p>&copy; 2024 ElectroShop Dark Edition. All Rights Reserved.</p>
     </footer>
 
     <script>
@@ -308,50 +357,78 @@
             { id: 6, name: "Smart Watch", price: 249.00, img: "Watch" }
         ];
 
+        let cart = [];
         const grid = document.getElementById('product-grid');
         const searchInput = document.getElementById('search-input');
+        const cartCountElement = document.getElementById('cart-count');
+        const cartModal = document.getElementById('cart-modal');
+        const cartList = document.getElementById('cart-items-list');
+        const cartTotalDisplay = document.getElementById('cart-total-display');
 
         function displayProducts(productsToShow) {
             grid.innerHTML = ""; 
-
             if (productsToShow.length === 0) {
                 grid.innerHTML = '<div class="no-results">NOTHING FOUND</div>';
                 return;
             }
 
             productsToShow.forEach(product => {
-                const imgSrc = `https://placehold.co/300x400/111/444?text=${product.img}`;
                 const card = document.createElement('div');
                 card.className = 'card';
                 card.innerHTML = `
-                    <img src="${imgSrc}" alt="Buy ${product.name} at ElectroShop" class="card-img">
+                    <img src="https://placehold.co/300x400/111/444?text=${product.img}" class="card-img">
                     <div class="card-body">
                         <h2 class="card-title">${product.name}</h2>
                         <div class="card-price">$${product.price.toFixed(2)}</div>
-                        <button class="btn" onclick="addToCart('${product.name}')">ADD TO CART</button>
+                        <button class="btn" onclick="addToCart(${product.id})">ADD TO CART</button>
                     </div>
                 `;
                 grid.appendChild(card);
             });
         }
 
-        searchInput.addEventListener('input', (e) => {
-            const searchTerm = e.target.value.toLowerCase();
-            const filteredProducts = products.filter(product => 
-                product.name.toLowerCase().includes(searchTerm)
-            );
-            displayProducts(filteredProducts);
-        });
-
-        let cartTotal = 0;
-        const cartCountElement = document.getElementById('cart-count');
-
-        function addToCart(productName) {
-            cartTotal++;
-            cartCountElement.innerText = cartTotal;
-            console.log(`${productName} added to cart`);
+        function addToCart(id) {
+            const item = products.find(p => p.id === id);
+            cart.push(item);
+            cartCountElement.innerText = cart.length;
         }
 
+        function openCart() {
+            cartList.innerHTML = "";
+            let total = 0;
+
+            if (cart.length === 0) {
+                cartList.innerHTML = "<li style='text-align:center; color: #777;'>Cart is empty</li>";
+            } else {
+                cart.forEach((item) => {
+                    total += item.price;
+                    const li = document.createElement('li');
+                    li.className = 'cart-item';
+                    li.innerHTML = `<span>${item.name}</span> <span>$${item.price.toFixed(2)}</span>`;
+                    cartList.appendChild(li);
+                });
+            }
+            cartTotalDisplay.innerText = `Total: $${total.toFixed(2)}`;
+            cartModal.style.display = "block";
+        }
+
+        function closeCart() {
+            cartModal.style.display = "none";
+        }
+
+        // Close modal when clicking outside of it
+        window.onclick = function(event) {
+            if (event.target == cartModal) closeCart();
+        }
+
+        // Search logic
+        searchInput.addEventListener('input', (e) => {
+            const term = e.target.value.toLowerCase();
+            const filtered = products.filter(p => p.name.toLowerCase().includes(term));
+            displayProducts(filtered);
+        });
+
+        // Initial Load
         displayProducts(products);
     </script>
 </body>
