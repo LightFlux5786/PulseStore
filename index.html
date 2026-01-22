@@ -328,7 +328,7 @@
         <a href="https://wa.me/76094035" class="social-btn" target="_blank" title="WhatsApp Us">
             <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
         </a>
-        <a href="https://instagram.com/YOUR_USERNAME" class="social-btn" target="_blank" title="Instagram">
+        <a href="https://instagram.com/pulse_store9" class="social-btn" target="_blank" title="Instagram">
             <img src="https://upload.wikimedia.org/wikipedia/commons/e/e7/Instagram_logo_2016.svg" alt="Instagram">
         </a>
     </div>
@@ -353,7 +353,8 @@
             { id: 2, name: "Smartphone Pro", price: 899.00, img: "Phone" },
             { id: 3, name: "4K Monitor", price: 349.50, img: "Screen" },
             { id: 4, name: "Mechanical Keyboard", price: 129.00, img: "Keyboard" },
-            { id: 5, name: "Gaming Mouse", price: 59.99, img: "Mouse" },
+            // CHANGED: Updated image for Gaming Mouse
+            { id: 5, name: "Gaming Mouse", price: 59.99, img: "image_0.png" },
             { id: 6, name: "Smart Watch", price: 249.00, img: "Watch" }
         ];
 
@@ -375,8 +376,10 @@
             productsToShow.forEach(product => {
                 const card = document.createElement('div');
                 card.className = 'card';
+                // Logic to handle both placeholder and real images
+                const imgSrc = product.img.includes('.') ? product.img : `https://placehold.co/300x400/111/444?text=${product.img}`;
                 card.innerHTML = `
-                    <img src="https://placehold.co/300x400/111/444?text=${product.img}" class="card-img" alt="${product.name}">
+                    <img src="${imgSrc}" class="card-img" alt="${product.name}">
                     <div class="card-body">
                         <h2 class="card-title">${product.name}</h2>
                         <div class="card-price">$${product.price.toFixed(2)}</div>
